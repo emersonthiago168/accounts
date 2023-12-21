@@ -27,6 +27,7 @@ function operation() {
             } else if (action === 'Depositar') {
                 deposit();
             } else if (action === 'Sacar') {
+                widthdraw();
             } else if (action === 'Sair') {
                 console.log(chalk.bgBlue.black('Obrigado por usar o Accounts!'))
             }
@@ -153,4 +154,34 @@ function getAccountBalance() {
             operation();
         })
         .catch(err => console.log(err))
+}
+
+// widthdraw an amount from user account
+function widthdraw() {
+    inquirer.prompt([
+        {
+            name: 'accountName',
+            message: 'Qual o nome da sua conta?'
+        }
+    ])
+        .then(answer => {
+            const accountName = answer['accountName'];
+
+            if (!checkAccount(accountName)) return widthdraw();
+
+            inquirer.prompt([
+                {
+                    name: 'amount',
+                    message: 'Quanto você deseja sacar?'
+                }
+            ])
+                .then(answer => {
+                    const amount = answer['amount'];
+
+                    console.log(amount);
+                    operation();
+                })
+                .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
 }
