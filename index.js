@@ -20,7 +20,14 @@ function operation() {
         .then(answer => {
             const action = answer['action'];
 
-            if (action === 'Criar Conta') createAccount();
+            if (action === 'Criar Conta') {
+                createAccount()
+            } else if (action === 'Consultar Saldo') {
+            } else if (action === 'Depositar') {
+            } else if (action === 'Sacar') {
+            } else if (action === 'Sair') {
+                console.log(chalk.bgBlue.black('Obrigado por usar o Accounts!'))
+            }
         })
         .catch(err => console.log(err));
 }
