@@ -23,6 +23,7 @@ function operation() {
             if (action === 'Criar Conta') {
                 createAccount()
             } else if (action === 'Consultar Saldo') {
+                getAccountBalance();
             } else if (action === 'Depositar') {
                 deposit();
             } else if (action === 'Sacar') {
@@ -80,9 +81,7 @@ function deposit() {
             const accountName = answer['accountName'];
 
             // verify if account exists
-            if (!checkAccount(accountName)) {
-                return deposit()
-            }
+            if (!checkAccount(accountName)) return deposit();
 
             inquirer.prompt([
                 {
@@ -131,4 +130,27 @@ function getAccount(accountName) {
     const accountJSON = fs.readFileSync(`accounts/${accountName}.json`, { encoding: 'utf8', flag: 'r' });
 
     return JSON.parse(accountJSON);
+}
+
+// show account balance
+function getAccountBalance() {
+    inquirer.prompt([
+        {
+            name: 'accountName',
+            message: 'Qual o nome da sua conta?'
+        }
+    ])
+        .then(answer => {
+            const accountName = answer['accountName'];
+
+            // verify if account exits
+            if (!checkAccount(accountName)) return getAccountBalance();
+
+            const accountData = getAccount(accountName)
+
+            console.log(chalk.bgBlue.black(`Olá, o saldo da sua conta é de R$${accountData.balance}`));
+
+            operation();
+        })
+        .catch(err => console.log(err))
 }
